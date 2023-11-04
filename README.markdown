@@ -24,8 +24,11 @@ http-server .
 ```
 
 ## 6. Open the link provided by the http-server
+
+Open the `main.html` file in a browser
+
 ```
-Open in Chrome: http://127.0.0.1:8080 (may be different for you)
+Open in Chrome: http://127.0.0.1:8080/main.html (IP:PORT may be different for you)
 ```
 
 ## 7. Open the console in Chrome and check the debug information
