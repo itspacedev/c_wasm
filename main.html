@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>C to WASM test</title>
+</head>
+<body>
+    <script async type="text/javascript" src="index.js"></script>
+    <script>
+        let w = null;
+        let wt = null;
+
+        function wasmReady() {
+            // Backup
+            // [w.stringToNewUTF8("This is "), w.stringToNewUTF8(" Wallet")]
+
+            console.log('--- WASM is ready ---');
+            console.log(w);
+            console.log("\n\n");
+
+            console.log("#1. Get integer square root");
+            let a = w.ccall('intSqrt', // name of C function
+                'number', // return type
+                ['number'], // argument types
+                [33]
+            ); // arguments
+            console.log('intSqrt(33) = ', a);
+            console.log("\n\n");
+
+
+            console.log("#2. Add two numbers");
+            let b = w.ccall('addTwoNumbers', // name of C function
+                'number', // return type
+                ['number', 'number'], // argument types
+                [4, 91]
+            ); // arguments
+            console.log('addTwoNumbers(4, 91) = ', b);
+            console.log("\n\n");
+
+
+            console.log("#3. Return a string from C");
+            let d = w.ccall('returnString');
+            console.log('returnString() = ', w.UTF8ToString(d));
+            console.log("\n\n");
+
+            console.log("#4. Get string length");
+            let e = w.ccall('getStringLength',
+                'number', // return type
+                ['string'], // argument types
+                ["This is my long string"]
+            ); // arguments
+            console.log('getStringLength("This is my long string") = ', e);
+
+        }
+        function initWasm() {
+            if (window.Module === undefined) {
+                wt = setTimeout(initWasm, 500);
+                return;
+            } else {
+                clearTimeout(wt);
+                w = window.Module;
+                wasmReady();
+            }
+        }
+        wt = setTimeout(initWasm, 500);
+    </script>
+</body>
+</html>
